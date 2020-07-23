@@ -4,7 +4,7 @@
         <b-container>
             <b-row>
                 <b-col cols="6" lg="8" class="mx-auto my-4 py-3">
-                    <h4>Seacrh Movie</h4>
+                    <h4>Seacrh Movie ya</h4>
                     <input type="text" class="w-100 px-3 py-3" placeholder="Enter the movie film..">
                 </b-col>
             </b-row>
