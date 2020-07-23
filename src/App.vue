@@ -9,7 +9,5 @@
 </template>
 
 <style>
-#app {
-  
-}
+
 </style>
