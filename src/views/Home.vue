@@ -5,10 +5,28 @@
     <div class="container">
       <div class="columns is-mobile">
         <div class="column is-9 is-offset-3">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
-          perferendis ab suscipit, ipsum autem commodi. Fugiat facilis pariatur
-          esse voluptatem nobis illum aperiam sed quidem, in eos reiciendis,
-          sunt modi!
+          <p>Cinema 21</p>
+          <br />
+          <b-field label-position="on-border">
+            <b-input v-model="keyword" placeholder="Search"></b-input>
+          </b-field>
+          <div class="columns is-multiline">
+            <div class="column is-4" v-for="(dt, i) in data" :key="i">
+              <b-skeleton height="130px" :active="loading"> </b-skeleton>
+              <template v-if="!loading">
+                <div class="card">
+                  <div class="card-image">
+                    <b-image
+                      :src="dt.Poster"
+                      :placeholder="dt.Poster"
+                      alt="A problematic image"
+                      ratio="5by3"
+                    ></b-image>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -16,7 +34,6 @@
 </template>
 
 <script>
-import axios from "axios";
 import Navbar from "@/components/Navbar.vue";
 
 export default {
@@ -26,10 +43,9 @@ export default {
   },
   data() {
     return {
-      view: false,
-      info: [],
       keyword: "",
       data: [],
+      loading: false,
     };
   },
   watch: {
@@ -37,14 +53,14 @@ export default {
   },
 
   methods: {
-    showBtn() {
-      this.view = true;
-      // console.log(this.info);
-    },
     search() {
-      axios
+      this.loading = true;
+      this.$http
         .get(`http://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
-        .then((res) => (this.info = res.data.Search));
+        .then((res) => {
+          this.data = res.data.Search;
+          this.loading = false;
+        });
     },
   },
 };

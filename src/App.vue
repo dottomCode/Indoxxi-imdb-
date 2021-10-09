@@ -6,7 +6,7 @@
 
 <style>
 #app {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
   background: black;
 }
