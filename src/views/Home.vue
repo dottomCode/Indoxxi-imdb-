@@ -1,66 +1,15 @@
 <template>
   <div class="home">
     <Navbar />
-    <div class="columns">
-      <div class="abs"></div>
-      <div class="column is-8 is-offset-4 mt-6">
-        <p
-          class="has-text-info is-size-2 has-text-weight-bold is-family-primary mt-5"
-        >
-          Find the best movies now !
-        </p>
-        <span class="has-text-grey">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit,
-          delectus nostrum aperiam sint tempora soluta autem nulla adipisci
-          illum temporibus nihil neque, ipsa similique corrupti?
-        </span>
-
-        <section class="mt-3 pr-6 box-card">
-          <b-field>
-            <b-input v-model="keyword" placeholder="Search"></b-input>
-          </b-field>
-          <div class="columns">
-            <div class="column">
-              <div
-                class="card mb-5 card-hover"
-                v-for="(data, i) in info"
-                :key="i"
-              >
-                <router-link :to="data.show.officialSite" target="_blank">
-                  <div
-                    @click="link(data.show.officialSite)"
-                    class="card-content has-text-black"
-                  >
-                    <div class="media">
-                      <div class="media-left">
-                        <figure class="image is-48x48">
-                          <img
-                            :src="data.show.image.medium"
-                            alt="Placeholder image"
-                          />
-                        </figure>
-                      </div>
-                      <div class="media-content">
-                        <p class="title is-4">{{ data.show.name }}</p>
-                        <p class="subtitle is-6 mb-0">
-                          Rating : {{ data.show.rating.average }}
-                        </p>
-                        <b-tag
-                          class="is-info mt-2 mr-2"
-                          v-for="(b, tg) in data.show.genres"
-                          :key="tg"
-                        >
-                          {{ b }}
-                        </b-tag>
-                      </div>
-                    </div>
-                    <div class="content pt-3" v-html="data.show.summary"></div>
-                  </div>
-                </router-link>
-              </div>
-            </div>
-          </div>
-        </section>
+    <div class="abs"></div>
+    <div class="container">
+      <div class="columns is-mobile">
+        <div class="column is-9 is-offset-3">
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
+          perferendis ab suscipit, ipsum autem commodi. Fugiat facilis pariatur
+          esse voluptatem nobis illum aperiam sed quidem, in eos reiciendis,
+          sunt modi!
+        </div>
       </div>
     </div>
   </div>
@@ -86,6 +35,7 @@ export default {
   watch: {
     keyword: "search",
   },
+
   methods: {
     showBtn() {
       this.view = true;
@@ -93,10 +43,8 @@ export default {
     },
     search() {
       axios
-        .get(`http://api.tvmaze.com/search/shows?q=${this.keyword}`)
-        .then((res) => (this.info = res.data));
-
-      console.log("data", this.info);
+        .get(`http://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
+        .then((res) => (this.info = res.data.Search));
     },
   },
 };
@@ -109,19 +57,12 @@ export default {
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: -1;
-  background: red;
-}
-.card-hover:hover {
-  box-shadow: 0 0 35px -10px;
-}
-
-.abs {
-  background-image: url("https://images.unsplash.com/photo-1575727735640-ed79e28955d8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=408&q=80");
+  /* z-index: 1; */
+  background-image: url("https://images.unsplash.com/photo-1629208113515-4569380efcb7?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=387&q=80");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
   width: 350px;
-  object-fit: contain;
+  object-fit: none;
 }
 </style>

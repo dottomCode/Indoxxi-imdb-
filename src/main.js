@@ -7,6 +7,7 @@ import axios from "axios";
 import "buefy/dist/buefy.css";
 
 Vue.use(Buefy, axios);
+Vue.prototype.$http = axios;
 
 Vue.config.productionTip = false;
 
