@@ -9,5 +9,10 @@
   min-height: 100vh;
   position: relative;
   background: black;
+  overflow: hidden;
+}
+* {
+  padding: 0;
+  margin: 0;
 }
 </style>

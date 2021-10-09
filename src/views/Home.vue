@@ -1,11 +1,10 @@
 <template>
   <div class="home">
-    <Navbar />
-    <div class="abs"></div>
     <div class="container">
       <div class="columns is-mobile">
-        <div class="column neon is-9 is-offset-3">
-          <p class="is-size-6">
+        <div class="abs"></div>
+        <div class="column is-9 is-offset-3">
+          <p class="neon is-size-6">
             <span class="is-size-3"> Cinema XXI</span> <br />
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Qui
             expedita minus officiis provident voluptate! Quas doloribus dolor
@@ -17,11 +16,11 @@
           <b-field label-position="on-border">
             <b-input v-model="keyword" placeholder="Search"></b-input>
           </b-field>
-          <div class="columns is-multiline">
+          <div class="columns is-multiline mb-3">
             <div class="column is-4" v-for="(dt, i) in data" :key="i">
               <b-skeleton height="130px" :active="loading"> </b-skeleton>
               <template v-if="!loading">
-                <div class="card">
+                <div class="card" @click="getModal(dt)">
                   <div class="card-image">
                     <b-image
                       :src="dt.Poster"
@@ -32,6 +31,54 @@
                   </div>
                 </div>
               </template>
+              <b-modal v-if="info" v-model="modal" :width="800">
+                <div class="card">
+                  <div class="card-content">
+                    <div class="media">
+                      <div class="media-left">
+                        <figure class="image is-128x128">
+                          <img
+                            :src="info.Poster"
+                            :placeholder="info.Poster"
+                            alt="A problematic image"
+                            ratio="5by3"
+                          />
+                        </figure>
+                      </div>
+                      <div class="media-content">
+                        <p class="title is-4">{{ info.Title }}</p>
+                        <p class="subtitle is-6">
+                          # {{ infoCard.Genre }} - @{{ infoCard.Director }}
+                        </p>
+                        <b-taglist attached>
+                          <b-tag type="is-warning">
+                            &#9734; {{ infoCard.imdbRating }}
+                          </b-tag>
+                          <b-tag type="is-info">{{ infoCard.Runtime }}</b-tag>
+                          <b-tag type="is-dark">{{ infoCard.Language }}</b-tag>
+                        </b-taglist>
+                        <b-taglist>
+                          <b-tag type="is-primary">
+                            {{ infoCard.Awards }}
+                          </b-tag>
+                          <b-tag type="is-info">
+                            {{ infoCard.Actors }}
+                          </b-tag>
+                        </b-taglist>
+
+                        <div class="content">
+                          {{ infoCard.Plot }}
+                          <br />
+                          <small
+                            >{{ infoCard.Released }} - @
+                            {{ infoCard.Production }}</small
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </b-modal>
             </div>
           </div>
         </div>
@@ -41,17 +88,16 @@
 </template>
 
 <script>
-import Navbar from "@/components/Navbar.vue";
-
 export default {
   name: "Home",
-  components: {
-    Navbar,
-  },
+  components: {},
   data() {
     return {
       keyword: "",
+      info: "",
+      infoCard: "",
       data: [],
+      modal: false,
       loading: false,
     };
   },
@@ -62,11 +108,24 @@ export default {
   methods: {
     search() {
       this.loading = true;
+      if (this.keyword.length > 3) {
+        this.$http
+          .get(`http://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
+          .then((res) => {
+            this.data = res.data.Search;
+            this.loading = false;
+          });
+      } else {
+        this.loading = false;
+      }
+    },
+    getModal(data) {
+      this.modal = true;
+      this.info = data;
       this.$http
-        .get(`http://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
+        .get(`http://www.omdbapi.com/?apikey=14123fb&i=${this.info.imdbID}`)
         .then((res) => {
-          this.data = res.data.Search;
-          this.loading = false;
+          this.infoCard = res.data;
         });
     },
   },
