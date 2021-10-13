@@ -110,7 +110,7 @@ export default {
       this.loading = true;
       if (this.keyword.length > 3) {
         this.$http
-          .get(`http://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
+          .get(`https://www.omdbapi.com/?apikey=14123fb&s=${this.keyword}`)
           .then((res) => {
             this.data = res.data.Search;
             this.loading = false;
@@ -123,7 +123,7 @@ export default {
       this.modal = true;
       this.info = data;
       this.$http
-        .get(`http://www.omdbapi.com/?apikey=14123fb&i=${this.info.imdbID}`)
+        .get(`https://www.omdbapi.com/?apikey=14123fb&i=${this.info.imdbID}`)
         .then((res) => {
           this.infoCard = res.data;
         });
